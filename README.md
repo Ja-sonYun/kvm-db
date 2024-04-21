@@ -1,6 +1,6 @@
-# kvm_db
+# kvm-db
 
-kvm_db is a Python library that provides a simple yet powerful interface for both key-value storage and model-based data management using SQLite. Designed for ease of use, it allows developers to quickly implement robust data storage solutions.
+kvm-db is a Python library that provides a simple yet powerful interface for both key-value storage and model-based data management using SQLite. Designed for ease of use, it allows developers to quickly implement robust data storage solutions.
 
 ## Features
 
@@ -15,15 +15,15 @@ TODO: Support for other backends like MySQL, jsondb, etc.
 
 ## Installation
 
-Install kvm_db using pip:
+Install kvm-db using pip:
 
 ```bash
-pip install kvm_db
+pip install kvm-db
 ```
 
 ## Quick Start
 
-Below is a quick example to get you started with kvm_db.
+Below is a quick example to get you started with kvm-db.
 
 ### Key-Value Database Example
 
@@ -53,7 +53,7 @@ print(kv_db["test_table", :])  # Output: []
 
 ### Model Database Example
 
-The Model Database in kvm_db provides an ORM-like interface designed specifically for Pydantic models, facilitating easy data management through object-oriented programming principles.
+The Model Database in kvm-db provides an ORM-like interface designed specifically for Pydantic models, facilitating easy data management through object-oriented programming principles.
 
 #### Features
 
