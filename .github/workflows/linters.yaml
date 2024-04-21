@@ -16,16 +16,22 @@ jobs:
         with:
           python-version: 3.11
 
-      - name: Install packages
-        run: |
-          pip install -r requirements.txt -r requirements-dev.txt
+      - name: Install Rye
+        uses: baptiste0928/cargo-install@v2
+        with:
+          crate: rye
+          git: https://github.com/mitsuhiko/rye
+          branch: main
+
+      - name: Install Dependencies
+        run: rye sync
 
       - name: Run Mypy
-        run: mypy .
+        run: rye run mypy .
 
       - name: Run Ruff check
-        run: ruff check --diff
+        run: rye run ruff check --diff
 
       - name: Run Ruff format
-        run: ruff format --diff
+        run: rye run ruff format --diff
 
