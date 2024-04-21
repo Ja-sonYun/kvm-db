@@ -8,8 +8,6 @@
 #   with-sources: false
 
 -e file:.
-aiosqlite==0.20.0
-    # via kvm-db
 annotated-types==0.6.0
     # via pydantic
 pydantic==2.7.0
@@ -17,6 +15,5 @@ pydantic==2.7.0
 pydantic-core==2.18.1
     # via pydantic
 typing-extensions==4.11.0
-    # via aiosqlite
     # via pydantic
     # via pydantic-core

@@ -1,16 +1,21 @@
 [project]
 name = "kvm-db"
-version = "0.1.0"
+version = "0.1.1"
 description = "Key-Value&Model Database"
 authors = [
     { name = "Ja-sonYun", email = "killa30867@gmail.com" }
 ]
 dependencies = [
     "pydantic>=2.7.0",
-    "aiosqlite>=0.20.0",
 ]
 readme = "README.md"
 requires-python = ">= 3.9"
+license = "MIT"
+keywords = ["database", "key-value", "model", "pydantic"]
+
+[project.urls]
+homepage = "https://github.com/Ja-sonYun/kvm-db"
+repository = "https://github.com/Ja-sonYun/kvm-db"
 
 [build-system]
 requires = ["hatchling"]
