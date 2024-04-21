@@ -11,6 +11,7 @@ kvm_db is a Python library that provides a simple yet powerful interface for bot
 #### Supported Backends
 
 - SQLite
+TODO: Support for other backends like MySQL, jsondb, etc.
 
 ## Installation
 
@@ -59,6 +60,8 @@ The Model Database in kvm_db provides an ORM-like interface designed specificall
 - Pydantic Model Support: Integrates seamlessly with Pydantic to ensure efficient data validation and serialization.
 - Serialization and Deserialization: Automatically serializes models to JSON for storage and deserializes JSON back into model instances upon retrieval, simplifying complex data type management.
 - Key-Value Underpinnings: The model database fundamentally uses a key-value store approach, enhancing simplicity and scalability.
+
+TODO: Support native Python dataclasses and other data types.
 
 ```python
 from kvm_db import ModelDatabase, Sqlite, TableModel
