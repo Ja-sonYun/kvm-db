@@ -9,7 +9,9 @@ class KeyValDatabase:
     def __init__(self, backend: FastDatabaseBackend) -> None:
         self._backend = backend
 
-    def create_table(self, name: str) -> None:
+    def create_table(self, name: str, overwrite: bool = False) -> None:
+        if not overwrite and name in self.tables():
+            return
         self._backend._create_table(name)
 
     def insert_datum(self, table: str, key: str, value: str) -> None:

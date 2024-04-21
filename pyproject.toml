@@ -1,7 +1,7 @@
 [project]
 name = "kvm-db"
 version = "0.1.0"
-description = "Add your description here"
+description = "Key-Value&Model Database"
 authors = [
     { name = "Ja-sonYun", email = "killa30867@gmail.com" }
 ]
@@ -10,7 +10,7 @@ dependencies = [
     "aiosqlite>=0.20.0",
 ]
 readme = "README.md"
-requires-python = ">= 3.8"
+requires-python = ">= 3.9"
 
 [build-system]
 requires = ["hatchling"]
@@ -52,7 +52,6 @@ select = [
 
 [tool.ruff]
 exclude = [".venv"]
-
 target-version = "py310"
 include = ["*.py"]
 line-length = 119
