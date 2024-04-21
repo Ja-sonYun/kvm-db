@@ -12,7 +12,8 @@ kvm-db is a Python library that provides a simple yet powerful interface for bot
 
 #### Supported Backends
 
-- SQLite
+- SQLite  
+
 TODO: Support for other backends like MySQL, jsondb, etc.
 
 ## Installation
