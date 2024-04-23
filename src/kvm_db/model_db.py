@@ -89,14 +89,14 @@ class ModelDatabase:
     def __getitem__(self, query: slice) -> TableModel: ...
 
     @overload
-    def __getitem__(self, query: type[_gDatum]) -> "_ModelTable[_gDatum]": ...
+    def __getitem__(self, query: type[_gDatum]) -> "ModelTable[_gDatum]": ...
 
     def __getitem__(
         self,
         query: type[_gDatum] | tuple[type[_gDatum], str | slice] | slice,
-    ) -> Union[_gDatum, "_ModelTable[_gDatum]", list[_gDatum]]:
+    ) -> Union[_gDatum, "ModelTable[_gDatum]", list[_gDatum]]:
         if isinstance(query, type):
-            return _ModelTable(self, query)
+            return ModelTable(self, query)
         elif isinstance(query, slice):
             table = cast(type[_gDatum], query.start)
             key = cast(str, query.stop)
@@ -116,7 +116,7 @@ class ModelDatabase:
         return datum
 
 
-class _ModelTable(Generic[_gDatum]):
+class ModelTable(Generic[_gDatum]):
     def __init__(self, kv_db: ModelDatabase, model: type[_gDatum]) -> None:
         self.kv_db = kv_db
         self.model = model

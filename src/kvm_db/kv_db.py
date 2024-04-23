@@ -45,14 +45,14 @@ class KeyValDatabase:
     def __getitem__(self, query: slice) -> str: ...
 
     @overload
-    def __getitem__(self, query: str) -> "_KeyValTable": ...
+    def __getitem__(self, query: str) -> "KeyValTable": ...
 
     def __getitem__(
         self,
         query: str | tuple[str, str | slice] | slice,
-    ) -> Union[str, "_KeyValTable", list[tuple[str, str]]]:
+    ) -> Union[str, "KeyValTable", list[tuple[str, str]]]:
         if isinstance(query, str):
-            return _KeyValTable(self, query)
+            return KeyValTable(self, query)
         elif isinstance(query, slice):
             table = query.start
             key = query.stop
@@ -70,15 +70,6 @@ class KeyValDatabase:
 
         return datum
 
-    @overload
-    def __setitem__(self, query: tuple[str, str], value: str) -> None: ...
-
-    @overload
-    def __setitem__(self, query: slice, value: str) -> None: ...
-
-    @overload
-    def __setitem__(self, query: str, value: str) -> None: ...
-
     def __setitem__(
         self,
         query: str | tuple[str, str] | slice,
@@ -93,21 +84,6 @@ class KeyValDatabase:
             table, key = query
 
         self.insert_datum(table, key, value)
-
-    @overload
-    def __delitem__(self, query: tuple[str, slice]) -> None: ...
-
-    @overload
-    def __delitem__(self, query: tuple[str, str]) -> None: ...
-
-    @overload
-    def __delitem__(self, query: tuple[str, str | slice]) -> None: ...
-
-    @overload
-    def __delitem__(self, query: slice) -> None: ...
-
-    @overload
-    def __delitem__(self, query: str) -> None: ...
 
     def __delitem__(self, query: str | tuple[str, str | slice] | slice) -> None:
         if isinstance(query, str):
@@ -129,7 +105,7 @@ class KeyValDatabase:
         self.delete_datum(table, key)
 
 
-class _KeyValTable:
+class KeyValTable:
     def __init__(self, kv_db: KeyValDatabase, table: str) -> None:
         self.kv_db = kv_db
         self.table = table
@@ -146,12 +122,6 @@ class _KeyValTable:
 
     def __setitem__(self, key: str, value: str) -> None:
         self.kv_db[self.table, key] = value
-
-    @overload
-    def __delitem__(self, key: str) -> None: ...
-
-    @overload
-    def __delitem__(self, key: slice) -> None: ...
 
     def __delitem__(self, key: str | slice) -> None:
         del self.kv_db[self.table, key]

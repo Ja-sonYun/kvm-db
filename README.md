@@ -26,6 +26,15 @@ pip install kvm-db
 
 ## Quick Start
 
+You can retrieve the value using this syntax
+
+```python
+db[TABLE_NAME, KEY]
+# Or
+table_db = db[TABLE_NAME]
+table_db[KEY]
+```
+
 Below is a quick example to get you started with kvm-db.
 
 ### Key-Value Database Example

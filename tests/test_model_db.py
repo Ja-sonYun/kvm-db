@@ -4,7 +4,7 @@ from collections.abc import Generator
 import pytest
 
 from kvm_db.backends.sqlite import Sqlite
-from kvm_db.model_db import ModelDatabase, TableModel, _ModelTable
+from kvm_db.model_db import ModelDatabase, TableModel, ModelTable
 
 
 class ExampleModel(TableModel):
@@ -71,6 +71,6 @@ def test_model_table_access(model_db: ModelDatabase) -> None:
     model_instance = ExampleModel(value="For table access")
     model_db.insert(model_instance)
     model_table = model_db[ExampleModel]
-    assert isinstance(model_table, _ModelTable), "Should return an instance of _ModelTable."
+    assert isinstance(model_table, ModelTable), "Should return an instance of _ModelTable."
     retrieved_model = model_table[model_instance.id]
     assert retrieved_model.value == model_instance.value, "Should access and retrieve the correct model."
