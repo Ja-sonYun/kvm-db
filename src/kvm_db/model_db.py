@@ -9,19 +9,19 @@ from kvm_db.backends.base import FastDatabaseBackend
 
 
 class TableModel(BaseModel):
-    _databse: Optional["ModelDatabase"] = PrivateAttr(default=None)
+    _database: Optional["ModelDatabase"] = PrivateAttr(default=None)
 
     id: str = Field(frozen=True, default_factory=lambda: str(uuid.uuid4()))
 
     def commit(self) -> None:
-        if self._databse is None:
+        if self._database is None:
             raise ValueError("Database not set")
-        self._databse.update(self)
+        self._database.update(self)
 
     def delete(self) -> None:
-        if self._databse is None:
+        if self._database is None:
             raise ValueError("Database not set")
-        self._databse.delete(self)
+        self._database.delete(self)
 
 
 _gDatum = TypeVar("_gDatum", bound=TableModel)
@@ -37,16 +37,20 @@ class ModelDatabase:
     def insert(self, model: TableModel) -> None:
         serialzied = model.model_dump_json(exclude={"_databse"})
         self._backend._insert_datum(model.__class__.__name__, model.id, serialzied)
-        model._databse = self
+        model._database = self
 
-    def delete(self, model: TableModel | type[TableModel], id: str | None = None) -> None:
+    def delete(
+        self,
+        model: TableModel | type[TableModel],
+        id: str | None = None,
+    ) -> None:
         if isinstance(model, type):
             if id is None:
                 raise ValueError("id must be provided to delete table")
             self._backend._delete_datum(model.__name__, id)
         else:
             self._backend._delete_datum(model.__class__.__name__, model.id)
-            model._databse = None
+            model._database = None
 
     def get_datum(
         self,
@@ -57,18 +61,18 @@ class ModelDatabase:
         if model_data is None:
             raise KeyError(f"Model {model_type.__name__} with id {id} not found")
         datum = model_type.model_validate_json(model_data)
-        datum._databse = self
+        datum._database = self
         return datum
 
     def get_all_data(self, model_type: type[_gDatum]) -> list[_gDatum]:
         all_data = self._backend._get_all_data(model_type.__name__)
         data = [model_type.model_validate_json(data[1]) for data in all_data]
         for datum in data:
-            datum._databse = self
+            datum._database = self
         return data
 
     def update(self, model: TableModel) -> None:
-        if model._databse is None:
+        if model._database is None:
             raise ValueError("Disconnect model from database")
         self._backend._update_datum(
             model.__class__.__name__,
