@@ -4,7 +4,7 @@ from collections.abc import Generator
 import pytest
 
 from kvm_db.backends.sqlite import Sqlite
-from kvm_db.model_db import ModelDatabase, TableModel, ModelTable
+from kvm_db.model_db import ModelDatabase, ModelTable, TableModel
 
 
 class ExampleModel(TableModel):
