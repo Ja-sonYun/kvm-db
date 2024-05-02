@@ -1,14 +1,13 @@
 # kvm-db
 
-[![Supported Python Versions](https://img.shields.io/pypi/pyversions/kvm-db/0.1.2)](https://pypi.org/project/kvm-db/) [![PyPI version](https://badge.fury.io/py/kvm-db.svg)](https://badge.fury.io/py/kvm-db)
+[![Supported Python Versions](https://img.shields.io/pypi/pyversions/kvm-db/0.1.3)](https://pypi.org/project/kvm-db/) [![PyPI version](https://badge.fury.io/py/kvm-db.svg)](https://badge.fury.io/py/kvm-db)
 
-kvm-db is a Python library that provides a simple yet powerful interface for both key-value storage and model-based data management using SQLite. Designed for ease of use, it allows developers to quickly implement robust data storage solutions.
+kvm-db is a Python library that provides a simple interface for both key-value storage and model-based data management using SQLite.
 
 ## Features
 
 - Key-Value Store: Simple API for key-value data operations.
 - Model Database: Manage data using Python classes and objects.
-- Support Type Hinting
 
 #### Supported Backends
 
@@ -63,15 +62,7 @@ del kv_db["test_table", "key1"]
 print(kv_db["test_table", :])  # Output: []
 ```
 
-### Model Database Example
-
-The Model Database in kvm-db provides an ORM-like interface designed specifically for Pydantic models, facilitating easy data management through object-oriented programming principles.
-
-#### Features
-
-- Pydantic Model Support: Integrates seamlessly with Pydantic to ensure efficient data validation and serialization.
-- Serialization and Deserialization: Automatically serializes models to JSON for storage and deserializes JSON back into model instances upon retrieval, simplifying complex data type management.
-- Key-Value Underpinnings: The model database fundamentally uses a key-value store approach, enhancing simplicity and scalability.
+### Model(`Pydantic`) Database Example
 
 TODO: Support native Python dataclasses and other data types.
 
