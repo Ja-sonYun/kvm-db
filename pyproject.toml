@@ -1,6 +1,6 @@
 [project]
 name = "kvm-db"
-version = "0.1.1"
+version = "0.1.2"
 description = "Key-Value&Model Database"
 authors = [
     { name = "Ja-sonYun", email = "killa30867@gmail.com" }
