@@ -21,6 +21,7 @@ class DynamoDB(DatabaseBackend):
 
     __meta_table_name__ = "__kvm_db_meta__"
     __table_key__ = "__registered_tables__"
+    __table_index__ = "table-index"
 
     def __init__(
         self,
@@ -106,31 +107,34 @@ class DynamoDB(DatabaseBackend):
         client = self._get_client()
         response = client.get_item(
             TableName=self.table_name,
-            Key={"table": {"S": table}, "key": {"S": key}},
+            Key={"key": {"S": key}},
         )
-        return response.get("Item", {}).get("value", {}).get("S")
+        item = response.get("Item", {})
+        if not item:
+            return None
+        if item.get("table", {}).get("S") != table:
+            return None
+        return item.get("value", {}).get("S")
 
     def _get_all_data(self, table: str) -> list[tuple[str, str]]:
         self._ensure_table_registered(table)
 
         client = self._get_client()
-        response = client.scan(TableName=self.table_name)
+        response = client.scan(
+            TableName=self.table_name,
+            IndexName=self.__table_index__,
+            FilterExpression="#table_name = :v_table",
+            ExpressionAttributeNames={"#table_name": "table"},
+            ExpressionAttributeValues={":v_table": {"S": table}},
+        )
         items = response.get("Items", [])
-        current_timestamp = int(time())
-        kv_pairs: list[tuple[str, str]] = []
+        data: list[tuple[str, str]] = []
         for item in items:
-            item_table = item["table"].get("S")
-            if item_table != table:
-                continue
-            ttl = item.get("ttl", {}).get("N")
-            if ttl is not None and int(ttl) < current_timestamp:
-                continue
-            key = item["key"].get("S")
-            value = item["value"].get("S")
+            key = item.get("key", {}).get("S")
+            value = item.get("value", {}).get("S")
             if key is not None and value is not None:
-                kv_pairs.append((key, value))
-
-        return kv_pairs
+                data.append((key, value))
+        return data
 
     def _update_datum(self, table: str, key: str, value: str) -> None:
         self._ensure_table_registered(table)
