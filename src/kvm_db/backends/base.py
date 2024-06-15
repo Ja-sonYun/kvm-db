@@ -3,9 +3,9 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 
 
-class FastDatabaseBackend(ABC):
+class DatabaseBackend(ABC):
     @abstractmethod
-    def _create_table(self, name: str) -> None:
+    def _create_table(self, name: str, ttl: int | None = None) -> None:
         pass
 
     @abstractmethod
@@ -13,7 +13,13 @@ class FastDatabaseBackend(ABC):
         pass
 
     @abstractmethod
-    def _insert_datum(self, table: str, key: str, value: str) -> None:
+    def _insert_datum(
+        self,
+        table: str,
+        key: str,
+        value: str,
+        ttl: int | None = None,
+    ) -> None:
         pass
 
     @abstractmethod

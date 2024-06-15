@@ -5,10 +5,10 @@ from collections.abc import Generator
 from contextlib import contextmanager
 from pathlib import Path
 
-from kvm_db.backends.base import FastDatabaseBackend
+from kvm_db.backends.base import DatabaseBackend
 
 
-class Sqlite(FastDatabaseBackend):
+class Sqlite(DatabaseBackend):
     def __init__(self, db_path: str | Path) -> None:
         self.db_path = Path(db_path)
 
@@ -34,7 +34,9 @@ class Sqlite(FastDatabaseBackend):
 
         conn.close()
 
-    def _create_table(self, name: str) -> None:
+    def _create_table(self, name: str, ttl: int | None = None) -> None:
+        if ttl is not None:
+            raise ValueError("Sqlite does not support TTL")
         with self._connect() as conn:
             conn.cursor().execute(f"CREATE TABLE IF NOT EXISTS {name} " "(key TEXT PRIMARY KEY, value TEXT)")
 
@@ -46,7 +48,15 @@ class Sqlite(FastDatabaseBackend):
 
         return [table[0] for table in result]
 
-    def _insert_datum(self, table: str, key: str, value: str) -> None:
+    def _insert_datum(
+        self,
+        table: str,
+        key: str,
+        value: str,
+        ttl: int | None = None,
+    ) -> None:
+        if ttl is not None:
+            raise ValueError("Sqlite does not support TTL")
         with self._connect() as conn:
             conn.cursor().execute(
                 f"REPLACE INTO {table} (key, value) VALUES (?, ?)",

@@ -5,7 +5,7 @@ from typing import Generic, Optional, TypeVar, Union, cast, overload
 
 from pydantic import BaseModel, Field, PrivateAttr
 
-from kvm_db.backends.base import FastDatabaseBackend
+from kvm_db.backends.base import DatabaseBackend
 
 
 class TableModel(BaseModel):
@@ -28,15 +28,15 @@ _gDatum = TypeVar("_gDatum", bound=TableModel)
 
 
 class ModelDatabase:
-    def __init__(self, backend: FastDatabaseBackend) -> None:
+    def __init__(self, backend: DatabaseBackend) -> None:
         self._backend = backend
 
-    def register(self, model: type[TableModel]) -> None:
-        self._backend._create_table(model.__name__)
+    def register(self, model: type[TableModel], *, ttl: int | None = None) -> None:
+        self._backend._create_table(model.__name__, ttl=ttl)
 
-    def insert(self, model: TableModel) -> None:
+    def insert(self, model: TableModel, *, ttl: int | None = None) -> None:
         serialzied = model.model_dump_json(exclude={"_databse"})
-        self._backend._insert_datum(model.__class__.__name__, model.id, serialzied)
+        self._backend._insert_datum(model.__class__.__name__, model.id, serialzied, ttl)
         model._database = self
 
     def delete(

@@ -2,20 +2,33 @@ from __future__ import annotations
 
 from typing import Union, overload
 
-from kvm_db.backends.base import FastDatabaseBackend
+from kvm_db.backends.base import DatabaseBackend
 
 
 class KeyValDatabase:
-    def __init__(self, backend: FastDatabaseBackend) -> None:
+    def __init__(self, backend: DatabaseBackend) -> None:
         self._backend = backend
 
-    def create_table(self, name: str, overwrite: bool = False) -> None:
+    def create_table(
+        self,
+        name: str,
+        *,
+        overwrite: bool = False,
+        ttl: int | None = None,
+    ) -> None:
         if not overwrite and name in self.tables():
             return
-        self._backend._create_table(name)
+        self._backend._create_table(name, ttl=ttl)
 
-    def insert_datum(self, table: str, key: str, value: str) -> None:
-        self._backend._insert_datum(table, key, value)
+    def insert_datum(
+        self,
+        table: str,
+        key: str,
+        value: str,
+        *,
+        ttl: int | None = None,
+    ) -> None:
+        self._backend._insert_datum(table, key, value, ttl)
 
     def delete_datum(self, table: str, key: str) -> None:
         self._backend._delete_datum(table, key)

@@ -9,11 +9,81 @@ kvm-db is a Python library that provides a simple interface for both key-value s
 - Key-Value Store: Simple API for key-value data operations.
 - Model Database: Manage data using Python classes and objects.
 
-#### Supported Backends
+### Supported Backends
 
-- SQLite  
+#### SQLite
 
-TODO: Support for other backends like MySQL, jsondb, etc.
+```sh
+pip install 'kvm-db'
+```
+
+```python
+from kvm_db import Sqlite
+
+backend = Sqlite("db.sqlite")
+```
+
+#### DynamoDB
+
+```sh
+pip install 'kvm-db[dynamodb]'
+```
+
+```python
+from kvm_db import DynamoDB
+
+backend = DynamoDB("table_name")
+```
+
+Terrform example for creating a DynamoDB table:
+
+```hcl
+module "kv_table" {
+  source  = "terraform-aws-modules/dynamodb-table/aws"
+  version = "4.0.1"
+
+  name     = "example-keyval-table"
+  hash_key = "key"
+
+  attributes = [
+    {
+      name = "key"
+      type = "S"
+    },
+    {
+      name = "table"
+      type = "S"
+    },
+  ]
+
+  global_secondary_indexes = [
+    {
+      name            = "table-index"
+      hash_key        = "table"
+      projection_type = "ALL"
+    }
+  ]
+
+  # If you want to enable TTL
+  ttl_attribute_name = "ttl"
+  ttl_enabled        = true
+}
+
+```
+
+You can insert datum with ttl attribute like this:
+
+```python
+kv_db.insert_datum(TABLE, KEY, VALUE, ttl=10)  # 10 seconds
+```
+
+#### SQLs
+
+TODO
+
+#### JsonDB
+
+TODO
 
 ## Installation
 
