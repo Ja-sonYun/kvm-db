@@ -24,7 +24,7 @@ jobs:
           branch: main
 
       - name: Install Dependencies
-        run: rye sync
+        run: rye sync --all-features
 
       - name: Run Mypy
         run: rye run mypy .
