@@ -142,7 +142,8 @@ class DynamoDB(DatabaseBackend):
         client = self._get_client()
         client.update_item(
             TableName=self.table_name,
-            Key={"table": {"S": table}, "key": {"S": key}},
-            UpdateExpression="SET value = :val",
+            Key={"key": {"S": key}},
+            UpdateExpression="SET #val = :val",
+            ExpressionAttributeNames={"#val": "value"},
             ExpressionAttributeValues={":val": {"S": value}},
         )
