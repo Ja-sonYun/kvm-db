@@ -1,6 +1,6 @@
 # kvm-db
 
-[![Supported Python Versions](https://img.shields.io/pypi/pyversions/kvm-db/0.1.4)](https://pypi.org/project/kvm-db/) [![PyPI version](https://badge.fury.io/py/kvm-db.svg)](https://badge.fury.io/py/kvm-db)
+[![Supported Python Versions](https://img.shields.io/pypi/pyversions/kvm-db/0.1.5)](https://pypi.org/project/kvm-db/) [![PyPI version](https://badge.fury.io/py/kvm-db.svg)](https://badge.fury.io/py/kvm-db)
 
 kvm-db is a Python library that provides a simple interface for both key-value storage and model-based data management using SQLite.
 
